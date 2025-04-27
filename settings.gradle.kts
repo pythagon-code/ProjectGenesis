@@ -10,7 +10,7 @@ plugins {
 
 rootProject.name = "project-genesis"
 
-include("cerebrum")
+include("cerebrum", "new-eden")
 
 project(":cerebrum").projectDir = file("projects/Cerebrum")
-//project(":new-eden").projectDir = file("projects/NewEden")
+project(":new-eden").projectDir = file("projects/NewEden")
