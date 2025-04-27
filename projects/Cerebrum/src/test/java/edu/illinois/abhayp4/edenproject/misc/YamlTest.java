@@ -1,4 +1,4 @@
-package edu.illinois.abhayp4.edenproject.misc;
+package edu.illinois.abhayp4.cerebrum.misc;
 
 import org.junit.jupiter.api.Test;
 import org.yaml.snakeyaml.Yaml;

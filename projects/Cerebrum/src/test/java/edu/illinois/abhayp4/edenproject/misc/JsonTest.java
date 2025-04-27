@@ -1,4 +1,4 @@
-package edu.illinois.abhayp4.edenproject.misc;
+package edu.illinois.abhayp4.projectgenesis.cerebrum.misc;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -7,7 +7,7 @@ import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.*;
 
-import edu.illinois.abhayp4.edenproject.channels.DuplexDataChannel;
+import edu.illinois.abhayp4.projectgenesis.cerebrum.channels.DuplexDataChannel;
 
 public class JsonTest {
     @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)

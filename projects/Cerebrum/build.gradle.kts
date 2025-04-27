@@ -1,5 +1,4 @@
 plugins {
-    java
     application
     id("org.openjfx.javafxplugin") version "0.1.0"
 }
@@ -23,4 +22,21 @@ application {
 javafx {
     version = "24.0.1"
     modules("javafx.controls", "javafx.fxml")
+}
+
+tasks.withType<Jar> {
+    manifest {
+        attributes["Main-Class"] = "edu.illinois.abhayp4.projectgenesis.cerebrum.Main"
+    }
+
+    from(sourceSets.main.get().output)
+
+    from("src/main/resources")
+    from("src/main/python")
+    from("configs")
+    from("exports")
+    from("mock")
+
+    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }

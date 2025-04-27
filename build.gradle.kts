@@ -1,5 +1,4 @@
 plugins {
-    java
     application
 }
 
@@ -7,6 +6,8 @@ group = "edu.illinois.abhayp4.projectgenesis"
 version = "1.0-SNAPSHOT"
 
 allprojects {
+    apply(plugin = "java")
+
     java {
         toolchain {
             languageVersion.set(JavaLanguageVersion.of(23))
@@ -31,17 +32,21 @@ allprojects {
             showStandardStreams = true
         }
     }
-
-    tasks.withType<Jar>() {
-        manifest {
-            attributes["Main-Class"] = "edu.illinois.abhayp4.projectgenesis.Main"
-        }
-
-        from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
-        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    }
 }
 
 application {
     mainClass.set("edu.illinois.abhayp4.projectgenesis.Main")
+}
+
+tasks.withType<Jar> {
+    manifest {
+        attributes["Main-Class"] = "edu.illinois.abhayp4.projectgenesis.Main"
+    }
+
+    from(sourceSets.main.get().output)
+
+    from("src/main/resources")
+
+    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
