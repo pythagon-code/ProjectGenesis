@@ -1,0 +1,2 @@
+configs/config1/
+The first line must be the path to the configuration.
