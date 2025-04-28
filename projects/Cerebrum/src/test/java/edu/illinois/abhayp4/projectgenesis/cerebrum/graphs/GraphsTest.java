@@ -1,4 +1,4 @@
-package edu.illinois.abhayp4.cerebrum.graphs;
+package edu.illinois.abhayp4.projectgenesis.cerebrum.graphs;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
