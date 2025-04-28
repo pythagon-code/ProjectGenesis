@@ -1,2 +1,0 @@
-mock/configs/config1/
-Don't modify. This is only for testing.
