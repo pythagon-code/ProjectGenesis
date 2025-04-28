@@ -7,4 +7,5 @@ module edu.illinois.abhayp4.projectgenesis.cerebrum {
     requires org.yaml.snakeyaml;
 
     exports edu.illinois.abhayp4.projectgenesis.cerebrum.application;
+    exports edu.illinois.abhayp4.projectgenesis.cerebrum.main;
 }

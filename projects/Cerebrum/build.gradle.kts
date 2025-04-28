@@ -41,13 +41,6 @@ tasks.withType<Jar> {
 
     from(sourceSets.main.get().output)
 
-    from("src/main/resources/") {
-        into("resources/")
-    }
-    from("src/main/python") {
-        into("resources/edu/illinois/abhayp4/projectgenesis/cerebrum/python")
-    }
-
     from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
 
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
