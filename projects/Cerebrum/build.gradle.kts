@@ -15,6 +15,14 @@ dependencies {
     implementation("jakarta.annotation:jakarta.annotation-api:2.1.1")
 }
 
+sourceSets {
+    main {
+        resources {
+            srcDirs("src/main/resources", "src/main/python")
+        }
+    }
+}
+
 application {
     mainClass.set("edu.illinois.abhayp4.projectgenesis.cerebrum.main.Main")
 }
@@ -25,18 +33,22 @@ javafx {
 }
 
 tasks.withType<Jar> {
+    dependsOn(tasks.compileJava)
+
     manifest {
         attributes["Main-Class"] = "edu.illinois.abhayp4.projectgenesis.cerebrum.Main"
     }
 
     from(sourceSets.main.get().output)
 
-    from("src/main/resources")
-    from("src/main/python")
-    from("configs")
-    from("exports")
-    from("mock")
+    from("src/main/resources/") {
+        into("resources/")
+    }
+    from("src/main/python") {
+        into("resources/edu/illinois/abhayp4/projectgenesis/cerebrum/python")
+    }
 
     from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
+
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }

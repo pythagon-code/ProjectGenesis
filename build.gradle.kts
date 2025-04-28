@@ -32,21 +32,35 @@ allprojects {
             showStandardStreams = true
         }
     }
+
+    tasks.withType<ProcessResources> {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    }
+}
+
+dependencies {
+    implementation(project(":cerebrum"))
+    implementation(project(":new-eden"))
 }
 
 application {
-    mainClass.set("edu.illinois.abhayp4.projectgenesis.Main")
+    mainClass.set("edu.illinois.abhayp4.projectgenesis.main.Main")
 }
 
 tasks.withType<Jar> {
+    dependsOn(tasks.compileJava)
+
     manifest {
-        attributes["Main-Class"] = "edu.illinois.abhayp4.projectgenesis.Main"
+        attributes["Main-Class"] = "edu.illinois.abhayp4.projectgenesis.main.Main"
     }
 
     from(sourceSets.main.get().output)
 
-    from("src/main/resources")
+    from("src/main/resources/") {
+        into("resources/")
+    }
 
     from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
+
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }

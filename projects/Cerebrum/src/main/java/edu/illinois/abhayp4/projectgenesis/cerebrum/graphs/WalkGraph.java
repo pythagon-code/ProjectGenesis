@@ -1,11 +1,7 @@
 package edu.illinois.abhayp4.projectgenesis.cerebrum.graphs;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.annotation.Nonnull;
 
 sealed class WalkGraph extends Graph permits CycleGraph {
     @JsonProperty("N") protected final int n;

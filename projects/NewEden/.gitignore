@@ -1,9 +1,5 @@
 # Gradle output
 /build/
 
-# Generated output and logs
-/output/
-/mock/output/
-
 # Use this directory for local testing
 /dev/

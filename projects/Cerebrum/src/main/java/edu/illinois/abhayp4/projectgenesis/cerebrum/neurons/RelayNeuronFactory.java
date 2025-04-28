@@ -5,15 +5,12 @@
 
 package edu.illinois.abhayp4.projectgenesis.cerebrum.neurons;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import edu.illinois.abhayp4.projectgenesis.cerebrum.brain.SimulatorConfig;
-import edu.illinois.abhayp4.projectgenesis.cerebrum.graphs.Graph;
 import jakarta.annotation.Nonnull;
 
 public class RelayNeuronFactory {

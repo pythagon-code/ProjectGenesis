@@ -1,11 +1,8 @@
 package edu.illinois.abhayp4.projectgenesis.cerebrum.graphs;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.annotation.Nonnull;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public final class CustomGraph extends Graph {
     @JsonProperty("NVertices") public int nVertices;

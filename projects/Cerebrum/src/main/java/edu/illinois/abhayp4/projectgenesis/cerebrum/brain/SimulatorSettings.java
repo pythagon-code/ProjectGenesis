@@ -1,7 +1,6 @@
 package edu.illinois.abhayp4.projectgenesis.cerebrum.brain;
 
 import java.io.*;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Properties;
