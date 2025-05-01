@@ -1,6 +1,7 @@
 plugins {
     application
     id("org.openjfx.javafxplugin") version "0.1.0"
+    id("org.beryx.jlink") version "3.1.1"
 }
 
 group = "edu.illinois.abhayp4.projectgenesis.cerebrum"
@@ -12,7 +13,6 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-core")
     implementation("com.fasterxml.jackson.core:jackson-annotations")
     implementation("com.fasterxml.jackson.core:jackson-databind")
-    implementation("jakarta.annotation:jakarta.annotation-api:2.1.1")
 }
 
 sourceSets {
@@ -24,24 +24,21 @@ sourceSets {
 }
 
 application {
-    mainClass.set("edu.illinois.abhayp4.projectgenesis.cerebrum.main.Main")
+    mainModule.set("edu.illinois.abhayp4.projectgenesis.cerebrum")
+    mainClass.set("edu.illinois.abhayp4.projectgenesis.cerebrum.application.Main")
 }
 
 javafx {
     version = "24.0.1"
-    modules("javafx.controls", "javafx.fxml")
+    modules("javafx.controls", "javafx.fxml", "javafx.graphics")
 }
 
-tasks.withType<Jar> {
-    dependsOn(tasks.compileJava)
+jlink {
+    options.set(listOf("--no-header-files", "--no-man-pages"))
 
-    manifest {
-        attributes["Main-Class"] = "edu.illinois.abhayp4.projectgenesis.cerebrum.Main"
+    launcher {
+        name = "project-genesis-cererbrum"
     }
 
-    from(sourceSets.main.get().output)
-
-    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
-
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    addExtraDependencies("javafx.base", "javafx.controls", "javafx.fxml", "javafx.graphics")
 }

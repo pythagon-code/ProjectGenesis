@@ -1,5 +1,7 @@
 plugins {
     application
+    id("org.openjfx.javafxplugin") version "0.1.0"
+    id("org.beryx.jlink") version "3.1.1"
 }
 
 group = "edu.illinois.abhayp4.projectgenesis"
@@ -12,6 +14,7 @@ allprojects {
         toolchain {
             languageVersion.set(JavaLanguageVersion.of(23))
         }
+        modularity.inferModulePath = true
     }
 
     repositories {
@@ -21,6 +24,7 @@ allprojects {
     dependencies {
         testImplementation("org.junit.jupiter:junit-jupiter:5.7.1")
         testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+        implementation("jakarta.annotation:jakarta.annotation-api:2.1.1")
     }
 
     tasks.withType<Test>().configureEach {
@@ -44,23 +48,21 @@ dependencies {
 }
 
 application {
-    mainClass.set("edu.illinois.abhayp4.projectgenesis.main.Main")
+    mainModule.set("edu.illinois.abhayp4.projectgenesis")
+    mainClass.set("edu.illinois.abhayp4.projectgenesis.application.Main")
 }
 
-tasks.withType<Jar> {
-    dependsOn(tasks.compileJava)
+javafx {
+    version = "24.0.1"
+    modules("javafx.controls", "javafx.fxml", "javafx.graphics")
+}
 
-    manifest {
-        attributes["Main-Class"] = "edu.illinois.abhayp4.projectgenesis.main.Main"
+jlink {
+    options.set(listOf("--no-header-files", "--no-man-pages"))
+
+    launcher {
+        name = "project-genesis"
     }
 
-    from(sourceSets.main.get().output)
-
-    from("src/main/resources/") {
-        into("resources/")
-    }
-
-    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
-
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    addExtraDependencies("javafx.base", "javafx.controls", "javafx.fxml", "javafx.graphics")
 }

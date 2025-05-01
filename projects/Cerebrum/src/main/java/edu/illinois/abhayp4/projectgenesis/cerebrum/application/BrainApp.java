@@ -12,6 +12,10 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class BrainApp extends Application implements Closeable {
+    public static void main(String[] args) {
+        launch(args);
+    }
+
     private final BrainAppContext context = new BrainAppContext();
     private boolean done = false;
 

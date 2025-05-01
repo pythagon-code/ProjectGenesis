@@ -43,13 +43,13 @@ public record SimulatorSettings(
         String optimizationFile
     ) throws IOException {
         try (
-           FileInputStream systemStream = new FileInputStream(Paths.get(configFilePath, systemFile).toString());
-           FileInputStream modelArchitectureStream = new FileInputStream(Paths.get(configFilePath, modelArchitectureFile).toString());
-           FileInputStream transformersStream = new FileInputStream(Paths.get(configFilePath, transformersFile).toString());
-           FileInputStream neuronTopologyStream = new FileInputStream(Paths.get(configFilePath, neuronTopologyFile).toString());
-           FileInputStream baseNeuronStream = new FileInputStream(Paths.get(configFilePath, baseNeuronFile).toString());
-           FileInputStream graphStructuresStream = new FileInputStream(Paths.get(configFilePath, graphStructuresFile).toString());
-           FileInputStream optimizationStream = new FileInputStream(Paths.get(configFilePath, optimizationFile).toString());
+            FileInputStream systemStream = new FileInputStream(Paths.get(configFilePath, systemFile).toString());
+            FileInputStream modelArchitectureStream = new FileInputStream(Paths.get(configFilePath, modelArchitectureFile).toString());
+            FileInputStream transformersStream = new FileInputStream(Paths.get(configFilePath, transformersFile).toString());
+            FileInputStream neuronTopologyStream = new FileInputStream(Paths.get(configFilePath, neuronTopologyFile).toString());
+            FileInputStream baseNeuronStream = new FileInputStream(Paths.get(configFilePath, baseNeuronFile).toString());
+            FileInputStream graphStructuresStream = new FileInputStream(Paths.get(configFilePath, graphStructuresFile).toString());
+            FileInputStream optimizationStream = new FileInputStream(Paths.get(configFilePath, optimizationFile).toString());
         ) {
             return new SimulatorSettings(
                 new Yaml(),

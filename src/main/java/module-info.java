@@ -1,6 +1,5 @@
-@SuppressWarnings("module")
 module edu.illinois.abhayp4.projectgenesis {
-    requires edu.illinois.abhayp4.projectgenesis.cerebrum;
+    requires transitive edu.illinois.abhayp4.projectgenesis.cerebrum;
 
-    exports edu.illinois.abhayp4.projectgenesis.main;
+    exports edu.illinois.abhayp4.projectgenesis.application;
 }
