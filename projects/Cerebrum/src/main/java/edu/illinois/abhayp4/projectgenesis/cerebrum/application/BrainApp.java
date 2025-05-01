@@ -24,7 +24,7 @@ public class BrainApp extends Application implements Closeable {
         new ProcessBuilder("python3 src/main/python/worker.py").start();
         Properties properties = new Properties();
         SimulatorSettings settings;
-        try (InputStream stream = getClass().getClassLoader().getResourceAsStream("edu/illinois/abhayp4/project-genesis/celebrum/simulator.properties")) {
+        try (InputStream stream = getClass().getClassLoader().getResourceAsStream("simulator.properties")) {
             properties.load(stream);
             settings = SimulatorSettings.loadFromProperties(properties);
         } catch (IOException e) {
