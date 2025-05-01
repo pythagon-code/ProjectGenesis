@@ -1,6 +1,5 @@
 plugins {
     application
-    id("org.openjfx.javafxplugin") version "0.1.0"
     id("org.beryx.jlink") version "3.1.1"
 }
 
@@ -9,6 +8,7 @@ version = "1.0-SNAPSHOT"
 
 allprojects {
     apply(plugin = "java")
+    apply(plugin = "application")
 
     java {
         toolchain {
@@ -40,6 +40,42 @@ allprojects {
     tasks.withType<ProcessResources> {
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     }
+
+    tasks.register<Copy>("copyDependencies") {
+        val deps = layout.buildDirectory.dir("deps/").get().asFile
+        from(configurations.runtimeClasspath)
+        into(deps)
+
+        doLast {
+            subprojects.forEach { subproject ->
+                val runtimeClasspath = subproject.configurations.getByName("runtimeClasspath")
+                runtimeClasspath.resolvedConfiguration.resolvedArtifacts.forEach { artifact ->
+                    copy {
+                        from(artifact.file)
+                        into(deps)
+                    }
+                }
+            }
+        }
+    }
+
+    tasks.register<JavaExec>("runModularJar") {
+        mainModule.set(application.mainModule.get())
+        mainClass.set(application.mainModule.get())
+
+        val libs = layout.buildDirectory.dir("deps/").get().asFile.absolutePath
+        val deps = layout.buildDirectory.dir("libs/").get().asFile.absolutePath
+
+        classpath = files(libs, deps)
+
+
+
+        jvmArgs = listOf(
+            "--enable-native-access=javafx.graphics",
+            "--module-path", "$libs;$deps",
+            "-m", "${application.mainModule.get()}/${application.mainClass.get()}"
+        )
+    }
 }
 
 dependencies {
@@ -52,16 +88,17 @@ application {
     mainClass.set("edu.illinois.abhayp4.projectgenesis.application.Main")
 }
 
-javafx {
-    version = "24.0.1"
-    modules("javafx.controls", "javafx.fxml", "javafx.graphics")
+tasks.withType<Jar> {
+    manifest {
+        attributes["Main-Class"] = "edu.illinois.abhayp4.projectgenesis.application.Main"
+    }
 }
 
 jlink {
     options.set(listOf("--no-header-files", "--no-man-pages"))
 
     launcher {
-        name = "project-genesis"
+        name = "project-genesis-cerebrum"
     }
 
     addExtraDependencies("javafx.base", "javafx.controls", "javafx.fxml", "javafx.graphics")

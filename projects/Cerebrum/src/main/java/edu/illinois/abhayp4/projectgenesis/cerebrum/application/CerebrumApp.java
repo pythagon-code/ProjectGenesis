@@ -11,12 +11,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class BrainApp extends Application implements Closeable {
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    private final BrainAppContext context = new BrainAppContext();
+public class CerebrumApp extends Application implements Closeable {
+    private final CerebrumAppContext context = new CerebrumAppContext();
     private boolean done = false;
 
     @Override

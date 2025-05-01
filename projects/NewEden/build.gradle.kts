@@ -11,8 +11,14 @@ application {
     mainClass.set("edu.illinois.abhayp4.projectgenesis.neweden.main.Main")
 }
 
+tasks.withType<Jar> {
+    manifest {
+        attributes["Main-Class"] = "edu.illinois.abhayp4.projectgenesis.neweden.main.Main"
+    }
+}
+
 jlink {
-    options.set(listOf("--strip-debug", "--no-header-files", "--no-man-pages"))
+    options.set(listOf("--no-header-files", "--no-man-pages"))
 
     launcher {
         name = "project-genesis-new-eden"

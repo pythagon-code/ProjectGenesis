@@ -7,6 +7,6 @@ module edu.illinois.abhayp4.projectgenesis.cerebrum {
     requires javafx.graphics;
     requires org.yaml.snakeyaml;
 
-    exports edu.illinois.abhayp4.projectgenesis.cerebrum.application;
-    opens edu.illinois.abhayp4.projectgenesis.cerebrum.application to javafx.fxml;
+    exports edu.illinois.abhayp4.projectgenesis.cerebrum.main;
+    opens edu.illinois.abhayp4.projectgenesis.cerebrum.application to javafx.fxml, javafx.graphics;
 }

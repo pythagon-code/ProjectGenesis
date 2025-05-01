@@ -25,19 +25,25 @@ sourceSets {
 
 application {
     mainModule.set("edu.illinois.abhayp4.projectgenesis.cerebrum")
-    mainClass.set("edu.illinois.abhayp4.projectgenesis.cerebrum.application.Main")
+    mainClass.set("edu.illinois.abhayp4.projectgenesis.cerebrum.main.CerebrumMain")
 }
 
 javafx {
     version = "24.0.1"
-    modules("javafx.controls", "javafx.fxml", "javafx.graphics")
+    modules("javafx.base", "javafx.controls", "javafx.fxml", "javafx.graphics")
+}
+
+tasks.withType<Jar> {
+    manifest {
+        attributes["Main-Class"] = "edu.illinois.abhayp4.projectgenesis.cerebrum.application.Main"
+    }
 }
 
 jlink {
     options.set(listOf("--no-header-files", "--no-man-pages"))
 
     launcher {
-        name = "project-genesis-cererbrum"
+        name = "project-genesis-cerebrum"
     }
 
     addExtraDependencies("javafx.base", "javafx.controls", "javafx.fxml", "javafx.graphics")

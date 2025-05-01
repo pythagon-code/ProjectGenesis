@@ -14,7 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-import edu.illinois.abhayp4.projectgenesis.cerebrum.application.BrainAppContext;
+import edu.illinois.abhayp4.projectgenesis.cerebrum.application.CerebrumAppContext;
 import edu.illinois.abhayp4.projectgenesis.cerebrum.neurons.RelayNeuronFactory;
 import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
@@ -101,7 +101,7 @@ public final class BrainSimulator {
         heartbeat = new MessageHeartbeat();
     }
 
-    public void start(BrainAppContext feedback) {
+    public void start(CerebrumAppContext feedback) {
 
     }
 
