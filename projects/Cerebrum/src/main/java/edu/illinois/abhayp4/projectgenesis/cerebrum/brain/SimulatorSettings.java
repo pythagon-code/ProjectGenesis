@@ -18,22 +18,27 @@ public record SimulatorSettings(
     @Nonnull Map<String, Object> optimizationObject
 ) {
     public static @Nonnull SimulatorSettings loadFromProperties(@Nonnull Properties properties) throws IOException {
-        try (BufferedReader reader = new BufferedReader(new FileReader(properties.getProperty("config.file.path")))) {
+        try (
+            InputStream stream = SimulatorSettings.class.getClassLoader()
+                .getResourceAsStream("configs/config.properties")
+        ) {
+            Properties configProperties = new Properties();
+            configProperties.load(stream);
             return loadFromFiles(
-                reader.readLine().strip(),
-                properties.getProperty("system"),
-                properties.getProperty("model.architecture"),
-                properties.getProperty("transformers"),
-                properties.getProperty("neuron.topology"),
-                properties.getProperty("base.neuron"),
-                properties.getProperty("graph.structures"),
-                properties.getProperty("optimization")
+                configProperties.getProperty("config.path"),
+                "system.yml",
+                "modelArchitecture.yml",
+                "transformers.yml",
+                "neuronTopology.yml",
+                "baseNeuron.yml",
+                "graphStructures.yml",
+                "optimization.yml"
             );
         }
     }
 
     private static SimulatorSettings loadFromFiles(
-        String configFilePath,
+        String configPath,
         String systemFile,
         String modelArchitectureFile,
         String transformersFile,
@@ -43,13 +48,13 @@ public record SimulatorSettings(
         String optimizationFile
     ) throws IOException {
         try (
-            FileInputStream systemStream = new FileInputStream(Paths.get(configFilePath, systemFile).toString());
-            FileInputStream modelArchitectureStream = new FileInputStream(Paths.get(configFilePath, modelArchitectureFile).toString());
-            FileInputStream transformersStream = new FileInputStream(Paths.get(configFilePath, transformersFile).toString());
-            FileInputStream neuronTopologyStream = new FileInputStream(Paths.get(configFilePath, neuronTopologyFile).toString());
-            FileInputStream baseNeuronStream = new FileInputStream(Paths.get(configFilePath, baseNeuronFile).toString());
-            FileInputStream graphStructuresStream = new FileInputStream(Paths.get(configFilePath, graphStructuresFile).toString());
-            FileInputStream optimizationStream = new FileInputStream(Paths.get(configFilePath, optimizationFile).toString());
+            InputStream systemStream = getConfigStream(configPath, systemFile);
+            InputStream modelArchitectureStream = getConfigStream(configPath, modelArchitectureFile);
+            InputStream transformersStream = getConfigStream(configPath, transformersFile);
+            InputStream neuronTopologyStream = getConfigStream(configPath, neuronTopologyFile);
+            InputStream baseNeuronStream = getConfigStream(configPath, baseNeuronFile);
+            InputStream graphStructuresStream = getConfigStream(configPath, graphStructuresFile);
+            InputStream optimizationStream = getConfigStream(configPath, optimizationFile);
         ) {
             return new SimulatorSettings(
                 new Yaml(),
@@ -62,6 +67,11 @@ public record SimulatorSettings(
                 optimizationStream
             );
         }
+    }
+
+    private static InputStream getConfigStream(String configPath, String resourceName) {
+        return SimulatorSettings.class.getClassLoader().getResourceAsStream(
+            Paths.get(configPath, resourceName).toString());
     }
 
     private SimulatorSettings(
