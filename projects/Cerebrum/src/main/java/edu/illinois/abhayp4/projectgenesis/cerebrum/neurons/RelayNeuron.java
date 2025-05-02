@@ -17,7 +17,7 @@ import jakarta.annotation.Nonnull;
     include = JsonTypeInfo.As.PROPERTY
 )
 @JsonSubTypes({
-    @JsonSubTypes.Type(value = BaseNeuron.class),
+    @JsonSubTypes.Type(value = PrimitiveNeuron.class),
     @JsonSubTypes.Type(value = MetaNeuron.class),
     @JsonSubTypes.Type(value = ResponseNeuron.class)
 })

@@ -60,6 +60,8 @@ allprojects {
     }
 
     tasks.register<JavaExec>("runModularJar") {
+        dependsOn(tasks.getByName("build"), tasks.getByName("copyDependencies"))
+
         mainModule.set(application.mainModule.get())
         mainClass.set(application.mainModule.get())
 
@@ -67,8 +69,6 @@ allprojects {
         val deps = layout.buildDirectory.dir("libs/").get().asFile.absolutePath
 
         classpath = files(libs, deps)
-
-
 
         jvmArgs = listOf(
             "--enable-native-access=javafx.graphics",
