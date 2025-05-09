@@ -1,4 +1,4 @@
-shitass module edu.illinois.abhayp4.projectgenesis.cerebrum {
+module edu.illinois.abhayp4.projectgenesis.cerebrum {
     requires com.fasterxml.jackson.databind;
     requires jakarta.annotation;
     requires java.logging;
