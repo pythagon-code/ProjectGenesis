@@ -1,5 +1,6 @@
 plugins {
     application
+    id("org.openjfx.javafxplugin") version "0.1.0"
     id("org.beryx.jlink") version "3.1.1"
 }
 
@@ -41,26 +42,21 @@ allprojects {
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     }
 
-    tasks.register<Copy>("copyDependencies") {
-        val deps = layout.buildDirectory.dir("deps/").get().asFile
-        from(configurations.runtimeClasspath)
-        into(deps)
-
+    tasks.withType<Jar> {
         doLast {
-            subprojects.forEach { subproject ->
-                val runtimeClasspath = subproject.configurations.getByName("runtimeClasspath")
-                runtimeClasspath.resolvedConfiguration.resolvedArtifacts.forEach { artifact ->
-                    copy {
-                        from(artifact.file)
-                        into(deps)
-                    }
-                }
+            manifest {
+                attributes["Main-Class"] = application.mainClass.get()
             }
         }
     }
 
+    tasks.register<Copy>("copyDeps") {
+        from(configurations.runtimeClasspath)
+        into(layout.buildDirectory.dir("deps/"))
+    }
+
     tasks.register<JavaExec>("runModularJar") {
-        dependsOn(tasks.getByName("build"), tasks.getByName("copyDependencies"))
+        dependsOn(tasks.getByName("build"), tasks.getByName("copyDeps"))
 
         mainModule.set(application.mainModule.get())
         mainClass.set(application.mainModule.get())
@@ -88,12 +84,6 @@ application {
     mainClass.set("edu.illinois.abhayp4.projectgenesis.application.Main")
 }
 
-tasks.withType<Jar> {
-    manifest {
-        attributes["Main-Class"] = "edu.illinois.abhayp4.projectgenesis.application.Main"
-    }
-}
-
 jlink {
     options.set(listOf("--no-header-files", "--no-man-pages"))
 
@@ -101,5 +91,5 @@ jlink {
         name = "project-genesis-cerebrum"
     }
 
-    addExtraDependencies("javafx.base", "javafx.controls", "javafx.fxml", "javafx.graphics")
+    addExtraDependencies("javafx")
 }

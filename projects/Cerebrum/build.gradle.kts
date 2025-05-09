@@ -33,12 +33,6 @@ javafx {
     modules("javafx.base", "javafx.controls", "javafx.fxml", "javafx.graphics")
 }
 
-tasks.withType<Jar> {
-    manifest {
-        attributes["Main-Class"] = "edu.illinois.abhayp4.projectgenesis.cerebrum.application.Main"
-    }
-}
-
 jlink {
     options.set(listOf("--no-header-files", "--no-man-pages"))
 
@@ -46,5 +40,5 @@ jlink {
         name = "project-genesis-cerebrum"
     }
 
-    addExtraDependencies("javafx.base", "javafx.controls", "javafx.fxml", "javafx.graphics")
+    addExtraDependencies("javafx.base")
 }

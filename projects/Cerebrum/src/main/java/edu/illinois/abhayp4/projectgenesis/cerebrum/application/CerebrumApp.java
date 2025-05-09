@@ -2,7 +2,6 @@ package edu.illinois.abhayp4.projectgenesis.cerebrum.application;
 
 import edu.illinois.abhayp4.projectgenesis.cerebrum.brain.BrainSimulator;
 import edu.illinois.abhayp4.projectgenesis.cerebrum.brain.SimulatorSettings;
-import jakarta.annotation.Nonnull;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -25,6 +24,7 @@ public class CerebrumApp extends Application implements Closeable {
             for (String resource : resources) {
                 try (PrintWriter writer = new PrintWriter(Paths.get(tempDir.toString(), resource).toString())) {
                     StringBuilder stringBuilder = new StringBuilder();
+
                     try (
                         BufferedReader reader = new BufferedReader(new InputStreamReader(
                             CerebrumApp.class.getClassLoader().getResourceAsStream(resource)))
@@ -35,8 +35,7 @@ public class CerebrumApp extends Application implements Closeable {
                     }
                 }
             }
-
-            System.out.println(tempDir.toString());
+            System.out.println("Python temporary directory: " + tempDir.toString());
         } catch (IOException e) {
             throw new IOError(e);
         }
@@ -51,6 +50,7 @@ public class CerebrumApp extends Application implements Closeable {
         String workerScriptPath = Paths.get(tempDir.toString(), "worker.py").toString();
         Process installRequirements = new ProcessBuilder(
             "python3", "-m", "pip", "install",  "-r", requirementsPath).inheritIO().start();
+        // dont forget upgrades
         try {
             int exitCode = installRequirements.waitFor();
             if (exitCode != 0) {
