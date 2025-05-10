@@ -35,7 +35,7 @@ public class CerebrumApp extends Application implements Closeable {
                     }
                 }
             }
-            System.out.println("Python temporary directory: " + tempDir.toString());
+            System.out.println("Python temporry directory: " + tempDir.toString());
         } catch (IOException e) {
             throw new IOError(e);
         }

@@ -58,17 +58,23 @@ allprojects {
     tasks.register<JavaExec>("runModularJar") {
         dependsOn(tasks.getByName("build"), tasks.getByName("copyDeps"))
 
-        mainModule.set(application.mainModule.get())
-        mainClass.set(application.mainModule.get())
+        javaLauncher.set(
+            javaToolchains.launcherFor {
+                languageVersion.set(JavaLanguageVersion.of(23))
+            }
+        )
 
-        val libs = layout.buildDirectory.dir("deps/").get().asFile.absolutePath
-        val deps = layout.buildDirectory.dir("libs/").get().asFile.absolutePath
+        mainModule.set(application.mainModule.get())
+        mainClass.set(application.mainClass.get())
+
+        val libs = layout.buildDirectory.dir("deps/").get().asFile
+        val deps = layout.buildDirectory.dir("libs/").get().asFile
 
         classpath = files(libs, deps)
 
         jvmArgs = listOf(
             "--enable-native-access=javafx.graphics",
-            "--module-path", "$libs;$deps",
+            "--module-path", "$libs${File.pathSeparator}$deps",
             "-m", "${application.mainModule.get()}/${application.mainClass.get()}"
         )
     }
@@ -88,7 +94,7 @@ jlink {
     options.set(listOf("--no-header-files", "--no-man-pages"))
 
     launcher {
-        name = "project-genesis-cerebrum"
+        name = "project-genesiss"
     }
 
     addExtraDependencies("javafx")
