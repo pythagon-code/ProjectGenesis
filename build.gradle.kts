@@ -67,8 +67,8 @@ allprojects {
         mainModule.set(application.mainModule.get())
         mainClass.set(application.mainClass.get())
 
-        val libs = layout.buildDirectory.dir("deps/").get().asFile
-        val deps = layout.buildDirectory.dir("libs/").get().asFile
+        val libs = layout.buildDirectory.dir("libs/").get().asFile
+        val deps = layout.buildDirectory.dir("deps/").get().asFile
 
         classpath = files(libs, deps)
 

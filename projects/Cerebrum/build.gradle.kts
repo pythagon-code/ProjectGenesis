@@ -18,7 +18,7 @@ dependencies {
 sourceSets {
     main {
         resources {
-            srcDirs("src/main/resources", "src/main/python")
+            srcDirs("src/main/resources/", "src/main/python/")
         }
     }
 }
@@ -30,7 +30,7 @@ application {
 
 javafx {
     version = "24.0.1"
-    modules("javafx.base", "javafx.controls", "javafx.fxml", "javafx.graphics")
+    modules("javafx.controls", "javafx.fxml", "javafx.graphics")
 }
 
 jlink {
@@ -40,5 +40,5 @@ jlink {
         name = "project-genesis-cerebrum"
     }
 
-    addExtraDependencies("javafx.base")
+    addExtraDependencies("javafx")
 }
