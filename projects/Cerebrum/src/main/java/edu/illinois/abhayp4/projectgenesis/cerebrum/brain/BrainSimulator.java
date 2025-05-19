@@ -7,6 +7,8 @@ import java.io.PrintWriter;
 import java.nio.file.Paths;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
@@ -15,6 +17,7 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 import edu.illinois.abhayp4.projectgenesis.cerebrum.application.CerebrumAppContext;
+import edu.illinois.abhayp4.projectgenesis.cerebrum.neurons.RelayNeuron;
 import edu.illinois.abhayp4.projectgenesis.cerebrum.neurons.RelayNeuronFactory;
 import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
@@ -31,6 +34,7 @@ public final class BrainSimulator {
     public final String checkpointsFolderPath;
     private final ObjectWriter writer;
     public final MessageHeartbeat heartbeat;
+    private final List<RelayNeuron> relayNeuronList;
 
     public static final Level LOW = new Level("LOW", Level.INFO.intValue() + 1) { };
     public static final Level MEDIUM = new Level("MEDIUM", LOW.intValue() + 1) { };
@@ -62,8 +66,8 @@ public final class BrainSimulator {
             FileHandler fh = new FileHandler(
                 logFilePath,
                 BYTES_PER_MB * config.systemConfig().maxSizePerLog(), config.systemConfig().nRotatingLogs(),
-                true)
-            ;
+                true
+            );
             fh.setFormatter(new SimpleFormatter());
 
             logger = Logger.getLogger("brain-simulation");
@@ -93,12 +97,17 @@ public final class BrainSimulator {
             if (!checkpointsFolder.mkdirs()) {
                 throw new NoSuchElementException("Could not create checkpoint folder " + checkpointsFolderPath);
             }
-        }
-        else {
+        } else {
             checkpointsFolderPath = null;
         }
 
         heartbeat = new MessageHeartbeat();
+        relayNeuronList = new ArrayList<>();
+    }
+
+    public int addNeuron(RelayNeuron neuron) {
+        relayNeuronList.add(neuron);
+        return relayNeuronList.size();
     }
 
     public void start(CerebrumAppContext feedback) {

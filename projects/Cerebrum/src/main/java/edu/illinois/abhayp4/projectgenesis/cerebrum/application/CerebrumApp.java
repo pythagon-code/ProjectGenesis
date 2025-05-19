@@ -19,15 +19,13 @@ public class CerebrumApp extends Application implements Closeable {
             tempDir = Files.createTempDirectory("python");
             new File(tempDir.toString()).deleteOnExit();
 
-            String[] resources = {"worker.py", "requirements.txt"};
+            String[] resources = {"/worker.py", "/requirements.txt"};
 
             for (String resource : resources) {
                 try (PrintWriter writer = new PrintWriter(Paths.get(tempDir.toString(), resource).toString())) {
-                    StringBuilder stringBuilder = new StringBuilder();
-
                     try (
                         BufferedReader reader = new BufferedReader(new InputStreamReader(
-                            CerebrumApp.class.getClassLoader().getResourceAsStream(resource)))
+                            CerebrumApp.class.getResourceAsStream(resource)))
                     ) {
                         while (reader.ready()) {
                             writer.println(reader.readLine());
@@ -35,7 +33,8 @@ public class CerebrumApp extends Application implements Closeable {
                     }
                 }
             }
-            System.out.println("Python temporry directory: " + tempDir.toString());
+
+            System.out.println("Python temporary directory: " + tempDir);
         } catch (IOException e) {
             throw new IOError(e);
         }
@@ -50,7 +49,6 @@ public class CerebrumApp extends Application implements Closeable {
         String workerScriptPath = Paths.get(tempDir.toString(), "worker.py").toString();
         Process installRequirements = new ProcessBuilder(
             "python3", "-m", "pip", "install",  "-r", requirementsPath).inheritIO().start();
-        // dont forget upgrades
         try {
             int exitCode = installRequirements.waitFor();
             if (exitCode != 0) {
@@ -63,7 +61,10 @@ public class CerebrumApp extends Application implements Closeable {
 
         Properties properties = new Properties();
         SimulatorSettings settings;
-        try (InputStream stream = getClass().getClassLoader().getResourceAsStream("configs/config.properties")) {
+
+        try (InputStream stream = getClass().getResourceAsStream("/configs/config.properties")) {
+            if (stream == null)
+                throw new IOException();
             properties.load(stream);
             settings = SimulatorSettings.loadFromProperties(properties);
         } catch (IOException e) {

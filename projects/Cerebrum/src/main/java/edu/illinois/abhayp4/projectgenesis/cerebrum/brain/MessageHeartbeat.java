@@ -4,6 +4,7 @@ import java.util.concurrent.Phaser;
 
 public final class MessageHeartbeat {
     private Phaser processMessageBarrier, sendMessageBarrier;
+    private long step = 0;
 
     private boolean running = false;
 
@@ -29,20 +30,18 @@ public final class MessageHeartbeat {
         sendMessageBarrier.arriveAndAwaitAdvance();
     }
 
-    public int getCurrentStep() {
-        return processMessageBarrier.getPhase();
-    }
-
-    public int getTargetStep(int deltaSteps) {
-        int endStep = processMessageBarrier.getPhase() + deltaSteps;
-        return (endStep < 0) ? (endStep - Integer.MIN_VALUE) : endStep;
+    public long getStep() {
+        return step;
     }
 
     synchronized void step() {
         running = true;
         processMessageBarrier.arrive();
+
         do {
             Thread.onSpinWait();
         } while (processMessageBarrier.getUnarrivedParties() != 1);
+
+        step++;
     }
 }

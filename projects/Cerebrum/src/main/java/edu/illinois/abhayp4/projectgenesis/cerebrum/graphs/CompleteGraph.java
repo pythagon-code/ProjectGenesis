@@ -7,7 +7,7 @@ final class CompleteGraph extends Graph {
 
     public CompleteGraph(
         @JsonProperty("Tag") String tag,
-        @JsonProperty("n") int n
+        @JsonProperty("N") int n
     ) {
         super(tag);
 

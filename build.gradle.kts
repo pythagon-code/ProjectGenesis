@@ -73,7 +73,6 @@ allprojects {
         classpath = files(libs, deps)
 
         jvmArgs = listOf(
-            "--enable-native-access=javafx.graphics",
             "--module-path", "$libs${File.pathSeparator}$deps",
             "-m", "${application.mainModule.get()}/${application.mainClass.get()}"
         )

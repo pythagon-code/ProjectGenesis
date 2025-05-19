@@ -1,7 +1,6 @@
 package edu.illinois.abhayp4.projectgenesis.cerebrum.brain;
 
 import java.io.*;
-import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Properties;
 
@@ -18,20 +17,17 @@ public record SimulatorSettings(
     @Nonnull Map<String, Object> optimizationObject
 ) {
     public static @Nonnull SimulatorSettings loadFromProperties(@Nonnull Properties properties) throws IOException {
-        try (
-            InputStream stream = SimulatorSettings.class.getClassLoader()
-                .getResourceAsStream("configs/config.properties")
-        ) {
+        try (InputStream stream = SimulatorSettings.class.getResourceAsStream("/configs/config.properties")) {
             Properties configProperties = new Properties();
             configProperties.load(stream);
             return loadFromFiles(
                 configProperties.getProperty("config.path"),
                 "system.yml",
-                "modelArchitecture.yml",
+                "model_architecture.yml",
                 "transformers.yml",
-                "neuronTopology.yml",
-                "baseNeuron.yml",
-                "graphStructures.yml",
+                "neuron_topology.yml",
+                "base_neuron.yml",
+                "graph_structures.yml",
                 "optimization.yml"
             );
         }
@@ -39,22 +35,22 @@ public record SimulatorSettings(
 
     private static SimulatorSettings loadFromFiles(
         String configPath,
-        String systemFile,
-        String modelArchitectureFile,
-        String transformersFile,
-        String neuronTopologyFile,
-        String baseNeuronFile,
-        String graphStructuresFile,
-        String optimizationFile
+        String systemResource,
+        String modelArchitectureResource,
+        String transformersResource,
+        String neuronTopologyResource,
+        String baseNeuronResource,
+        String graphStructuresResource,
+        String optimizationResource
     ) throws IOException {
         try (
-            InputStream systemStream = getConfigStream(configPath, systemFile);
-            InputStream modelArchitectureStream = getConfigStream(configPath, modelArchitectureFile);
-            InputStream transformersStream = getConfigStream(configPath, transformersFile);
-            InputStream neuronTopologyStream = getConfigStream(configPath, neuronTopologyFile);
-            InputStream baseNeuronStream = getConfigStream(configPath, baseNeuronFile);
-            InputStream graphStructuresStream = getConfigStream(configPath, graphStructuresFile);
-            InputStream optimizationStream = getConfigStream(configPath, optimizationFile);
+            InputStream systemStream = getConfigStream(configPath, systemResource);
+            InputStream modelArchitectureStream = getConfigStream(configPath, modelArchitectureResource);
+            InputStream transformersStream = getConfigStream(configPath, transformersResource);
+            InputStream neuronTopologyStream = getConfigStream(configPath, neuronTopologyResource);
+            InputStream baseNeuronStream = getConfigStream(configPath, baseNeuronResource);
+            InputStream graphStructuresStream = getConfigStream(configPath, graphStructuresResource);
+            InputStream optimizationStream = getConfigStream(configPath, optimizationResource);
         ) {
             return new SimulatorSettings(
                 new Yaml(),
@@ -70,8 +66,7 @@ public record SimulatorSettings(
     }
 
     private static InputStream getConfigStream(String configPath, String resourceName) {
-        return SimulatorSettings.class.getClassLoader().getResourceAsStream(
-            Paths.get(configPath, resourceName).toString());
+        return SimulatorSettings.class.getResourceAsStream(configPath + resourceName);
     }
 
     private SimulatorSettings(

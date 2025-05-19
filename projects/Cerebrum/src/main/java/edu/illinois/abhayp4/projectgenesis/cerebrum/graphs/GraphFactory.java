@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 public final class GraphFactory {
-    public GraphFactory() { }
-
     @SuppressWarnings("unchecked")
     public @Nonnull Graph createGraph(@Nonnull Map<String, Object> object) {
         String tag = (String) object.get("tag");

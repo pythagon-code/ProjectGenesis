@@ -9,6 +9,5 @@ import com.fasterxml.jackson.annotation.JsonIgnoreType;
 
 @JsonIgnoreType
 public sealed interface TargetDataChannel permits SimplexDataChannel {
-    void addMessage(String message);
-    boolean hasSpace();
+    void addMessage(TransmissionMessage message);
 }

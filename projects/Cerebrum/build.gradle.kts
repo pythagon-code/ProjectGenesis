@@ -25,7 +25,7 @@ sourceSets {
 
 application {
     mainModule.set("edu.illinois.abhayp4.projectgenesis.cerebrum")
-    mainClass.set("edu.illinois.abhayp4.projectgenesis.cerebrum.main.CerebrumMain")
+    mainClass.set("edu.illinois.abhayp4.projectgenesis.cerebrum.api.CerebrumApi")
 }
 
 javafx {
