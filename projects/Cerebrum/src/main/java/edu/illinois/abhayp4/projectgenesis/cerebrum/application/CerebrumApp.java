@@ -7,9 +7,6 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Properties;
 
 public class CerebrumApp extends Application implements Closeable {
@@ -21,9 +18,9 @@ public class CerebrumApp extends Application implements Closeable {
         Properties properties = new Properties();
         SimulatorSettings settings;
 
-        new PythonExecutor();
+        new PythonExecutor(0);
 
-        try (InputStream stream = getClass().getResourceAsStream("/configs/config.properties")) {
+        try (InputStream stream = getClass().getResourceAsStream("/default.properties")) {
             if (stream == null)
                 throw new IOException();
             properties.load(stream);

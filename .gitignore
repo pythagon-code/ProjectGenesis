@@ -1,6 +1,7 @@
 # Gradle output and cache
 /.gradle/
 /build/
+/projects/*/build/
 
 # VS Code specific
 /.vscode/

@@ -3,7 +3,7 @@ package edu.illinois.abhayp4.projectgenesis.cerebrum.brain;
 import java.util.concurrent.Phaser;
 
 public final class MessageHeartbeat {
-    private Phaser processMessageBarrier, sendMessageBarrier;
+    private final Phaser processMessageBarrier, sendMessageBarrier;
     private long step = 0;
 
     private boolean running = false;

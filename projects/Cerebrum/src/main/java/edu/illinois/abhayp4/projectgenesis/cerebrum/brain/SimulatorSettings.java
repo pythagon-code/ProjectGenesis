@@ -2,7 +2,6 @@ package edu.illinois.abhayp4.projectgenesis.cerebrum.brain;
 
 import java.io.*;
 import java.util.Map;
-import java.util.Properties;
 
 import jakarta.annotation.Nonnull;
 import org.yaml.snakeyaml.Yaml;
@@ -16,41 +15,15 @@ public record SimulatorSettings(
     @Nonnull Map<String, Object> graphStructuresObject,
     @Nonnull Map<String, Object> optimizationObject
 ) {
-    public static @Nonnull SimulatorSettings loadFromProperties(@Nonnull Properties properties) throws IOException {
-        try (InputStream stream = SimulatorSettings.class.getResourceAsStream("/configs/config.properties")) {
-            Properties configProperties = new Properties();
-            configProperties.load(stream);
-            return loadFromFiles(
-                configProperties.getProperty("config.path"),
-                "system.yml",
-                "model_architecture.yml",
-                "transformers.yml",
-                "neuron_topology.yml",
-                "base_neuron.yml",
-                "graph_structures.yml",
-                "optimization.yml"
-            );
-        }
-    }
-
-    private static SimulatorSettings loadFromFiles(
-        String configPath,
-        String systemResource,
-        String modelArchitectureResource,
-        String transformersResource,
-        String neuronTopologyResource,
-        String baseNeuronResource,
-        String graphStructuresResource,
-        String optimizationResource
-    ) throws IOException {
+    public static @Nonnull SimulatorSettings loadFromConfig(String config) throws IOException {
         try (
-            InputStream systemStream = getConfigStream(configPath, systemResource);
-            InputStream modelArchitectureStream = getConfigStream(configPath, modelArchitectureResource);
-            InputStream transformersStream = getConfigStream(configPath, transformersResource);
-            InputStream neuronTopologyStream = getConfigStream(configPath, neuronTopologyResource);
-            InputStream baseNeuronStream = getConfigStream(configPath, baseNeuronResource);
-            InputStream graphStructuresStream = getConfigStream(configPath, graphStructuresResource);
-            InputStream optimizationStream = getConfigStream(configPath, optimizationResource);
+            InputStream systemStream = getConfigStream(config, "system.yml");
+            InputStream modelArchitectureStream = getConfigStream(config, "model_architecture.yml");
+            InputStream transformersStream = getConfigStream(config, "transformers.yml");
+            InputStream neuronTopologyStream = getConfigStream(config, "neuron_topology.yml");
+            InputStream baseNeuronStream = getConfigStream(config, "base_neuron.yml");
+            InputStream graphStructuresStream = getConfigStream(config, "graph_structures.yml");
+            InputStream optimizationStream = getConfigStream(config, "optimization.yml");
         ) {
             return new SimulatorSettings(
                 new Yaml(),
@@ -65,8 +38,8 @@ public record SimulatorSettings(
         }
     }
 
-    private static InputStream getConfigStream(String configPath, String resourceName) {
-        return SimulatorSettings.class.getResourceAsStream(configPath + resourceName);
+    private static InputStream getConfigStream(String config, String resourceName) {
+        return SimulatorSettings.class.getResourceAsStream("/" + config + "/" + resourceName);
     }
 
     private SimulatorSettings(

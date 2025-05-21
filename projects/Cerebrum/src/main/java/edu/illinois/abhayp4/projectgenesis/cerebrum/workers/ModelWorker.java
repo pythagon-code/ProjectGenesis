@@ -39,7 +39,6 @@ public final class ModelWorker implements Closeable {
     private long outputCount = 0, outputCurrent = 0;
     private boolean done = false;
 
-
     private final ModelWorkerInputData startRound, endRound, shutdown;
 
     public ModelWorker() {

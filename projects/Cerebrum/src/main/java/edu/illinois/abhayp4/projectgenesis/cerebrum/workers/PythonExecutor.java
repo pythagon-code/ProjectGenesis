@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 public class PythonExecutor {
-    private static final String workerScript, requirements, pythonExec;
+    private static final String pythonExec, workerScript;
 
     static {
         try {
@@ -34,7 +34,7 @@ public class PythonExecutor {
             }
 
             workerScript = Paths.get(tempDir.toString(), "worker.py").toString();
-            requirements = Paths.get(tempDir.toString(), "requirements.txt").toString();
+            String requirements = Paths.get(tempDir.toString(), "requirements.txt").toString();
 
             System.out.println("Python temporary directory: " + tempDir);
 
@@ -53,13 +53,29 @@ public class PythonExecutor {
                 runSafeCommand(pythonExec, "-m", "pip", "install", "-r", requirements);
                 try (PrintWriter pw = new PrintWriter(new File("output/.venv/initialized.toml"))) {
                     pw.println("[initialized]");
-                    pw.printf("project = \"%s\"\n", "cerebrum");
-                    pw.printf("time = \"%s\"\n", ZonedDateTime.now());
+                    pw.printf("project = \"%s\"%n", "cerebrum");
+                    pw.printf("time = \"%s\"%n", ZonedDateTime.now());
                 }
             }
 
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private Thread thread;
+
+    public PythonExecutor(int port) {
+        Thread thread = new Thread(() -> runSafeCommand(pythonExec, workerScript, Integer.toString(port)));
+        thread.start();
+    }
+
+    public void waitForPythonProcessEnd() {
+        try {
+            thread.join();
+        }
+        catch (InterruptedException e) {
+            throw new RuntimeException("Cannot interrupt during Python process end");
         }
     }
 
@@ -69,7 +85,7 @@ public class PythonExecutor {
             Process process = pb.start();
             process.waitFor();
             if (process.exitValue() != 0) {
-                throw new RuntimeException("Process " + Arrays.asList(command) + " failed");
+                throw new RuntimeException("Command " + Arrays.asList(command) + " failed");
             }
         } catch (Exception e) {
             System.err.println(e.getMessage());
