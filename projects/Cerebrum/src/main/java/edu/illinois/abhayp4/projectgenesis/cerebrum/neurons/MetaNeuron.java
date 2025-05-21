@@ -1,5 +1,6 @@
 package edu.illinois.abhayp4.projectgenesis.cerebrum.neurons;
 
+import edu.illinois.abhayp4.projectgenesis.cerebrum.channels.TransmissionMessage;
 import jakarta.annotation.Nonnull;
 
 import java.util.ArrayList;
@@ -17,13 +18,7 @@ sealed class MetaNeuron extends RelayNeuron permits ResponseNeuron {
     }
 
     @Override
-    protected void onMessageNotSent() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    protected void onMessageReceived(int channelIdx, @Nonnull String message) {
+    protected void onMessageReceived(TransmissionMessage message) {
         // TODO Auto-generated method stub
         
     }

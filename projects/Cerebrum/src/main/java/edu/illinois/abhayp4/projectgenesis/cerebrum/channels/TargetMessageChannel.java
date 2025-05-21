@@ -8,6 +8,6 @@ package edu.illinois.abhayp4.projectgenesis.cerebrum.channels;
 import com.fasterxml.jackson.annotation.JsonIgnoreType;
 
 @JsonIgnoreType
-public sealed interface TargetDataChannel permits SimplexDataChannel {
+public sealed interface TargetMessageChannel permits MessageChannel {
     void addMessage(TransmissionMessage message);
 }

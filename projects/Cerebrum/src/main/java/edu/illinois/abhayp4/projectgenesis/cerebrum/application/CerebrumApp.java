@@ -2,6 +2,7 @@ package edu.illinois.abhayp4.projectgenesis.cerebrum.application;
 
 import edu.illinois.abhayp4.projectgenesis.cerebrum.brain.BrainSimulator;
 import edu.illinois.abhayp4.projectgenesis.cerebrum.brain.SimulatorSettings;
+import edu.illinois.abhayp4.projectgenesis.cerebrum.workers.PythonExecutor;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -12,55 +13,15 @@ import java.nio.file.Paths;
 import java.util.Properties;
 
 public class CerebrumApp extends Application implements Closeable {
-    private static final Path tempDir;
-
-    static {
-        try {
-            tempDir = Files.createTempDirectory("python");
-            new File(tempDir.toString()).deleteOnExit();
-
-            String[] resources = {"/worker.py", "/requirements.txt"};
-
-            for (String resource : resources) {
-                try (PrintWriter writer = new PrintWriter(Paths.get(tempDir.toString(), resource).toString())) {
-                    try (
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(
-                            CerebrumApp.class.getResourceAsStream(resource)))
-                    ) {
-                        while (reader.ready()) {
-                            writer.println(reader.readLine());
-                        }
-                    }
-                }
-            }
-
-            System.out.println("Python temporary directory: " + tempDir);
-        } catch (IOException e) {
-            throw new IOError(e);
-        }
-    }
-
     private final CerebrumAppContext context = new CerebrumAppContext();
     private boolean done = false;
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        String requirementsPath = Paths.get(tempDir.toString(), "requirements.txt").toString();
-        String workerScriptPath = Paths.get(tempDir.toString(), "worker.py").toString();
-        Process installRequirements = new ProcessBuilder(
-            "python3", "-m", "pip", "install",  "-r", requirementsPath).inheritIO().start();
-        try {
-            int exitCode = installRequirements.waitFor();
-            if (exitCode != 0) {
-                throw new RuntimeException("Failed to install Python requirements. Please check your environment.");
-            }
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        new ProcessBuilder("python3", workerScriptPath).start();
-
         Properties properties = new Properties();
         SimulatorSettings settings;
+
+        new PythonExecutor();
 
         try (InputStream stream = getClass().getResourceAsStream("/configs/config.properties")) {
             if (stream == null)

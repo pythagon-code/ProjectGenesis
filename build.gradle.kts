@@ -93,7 +93,7 @@ jlink {
     options.set(listOf("--no-header-files", "--no-man-pages"))
 
     launcher {
-        name = "project-genesiss"
+        name = "project-genesis"
     }
 
     addExtraDependencies("javafx")

@@ -6,10 +6,10 @@ import java.util.Queue;
 import com.fasterxml.jackson.annotation.JsonIgnoreType;
 
 @JsonIgnoreType
-public final class SimplexDataChannel implements SourceDataChannel, TargetDataChannel {
+public final class MessageChannel implements SourceMessageChannel, TargetMessageChannel {
     private final Queue<TransmissionMessage> queue;
 
-    public SimplexDataChannel() {
+    public MessageChannel() {
         queue = new PriorityQueue<>();
     }
 
@@ -19,8 +19,8 @@ public final class SimplexDataChannel implements SourceDataChannel, TargetDataCh
     }
 
     @Override
-    public boolean hasMessage(long currentStep) {
-        return queue.isEmpty() || queue.peek().targetStep() == currentStep;
+    public boolean hasAvailableMessage(long currentStep) {
+        return !queue.isEmpty() && queue.peek().targetStep() == currentStep;
     }
 
     @Override
